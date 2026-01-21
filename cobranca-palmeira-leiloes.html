@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cobrança - Edição de Vídeos | Bravora</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1d4ed8 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 800px;
+            min-height: auto;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+            padding: 40px;
+            padding-bottom: 120px;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .page {
+                margin: 0;
+                padding: 25px 35px;
+                padding-bottom: 100px;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 210mm;
+            }
+
+            .print-btn,
+            .copy-btn {
+                display: none !important;
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .header img {
+            max-width: 280px;
+            height: auto;
+        }
+
+        /* Title Section */
+        .title-section {
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
+            color: white;
+            padding: 20px 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(29, 78, 216, 0.3);
+        }
+
+        .title-section h1 {
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .title-section h1 i {
+            font-size: 24px;
+        }
+
+        /* Info Section */
+        .info-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border-left: 4px solid #1d4ed8;
+        }
+
+        .info-section p {
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-section p i {
+            color: #1d4ed8;
+            width: 20px;
+        }
+
+        .info-section strong {
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+
+        .info-section a {
+            color: #1d4ed8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .info-section a:hover {
+            text-decoration: underline;
+        }
+
+        /* Services Section */
+        .section-header {
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+            color: white;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 0;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header i {
+            font-size: 16px;
+        }
+
+        /* Table */
+        .table-container {
+            border-radius: 0 0 10px 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 35px;
+        }
+
+        .services-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .services-table th {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border: 1px solid #cbd5e1;
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #475569;
+            letter-spacing: 0.5px;
+        }
+
+        .services-table th:last-child {
+            text-align: right;
+        }
+
+        .services-table td {
+            border: 1px solid #e2e8f0;
+            padding: 16px 18px;
+            font-size: 14px;
+        }
+
+        .services-table td:first-child {
+            text-align: center;
+            width: 100px;
+            font-weight: 600;
+            color: #1d4ed8;
+        }
+
+        .services-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+            color: #1d4ed8;
+            width: 150px;
+        }
+
+        .services-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .services-table tr:hover {
+            background: #eff6ff;
+        }
+
+        /* Total Row */
+        .total-row td {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+            font-weight: 700;
+            font-size: 15px;
+            border-top: 2px solid #1d4ed8;
+        }
+
+        .total-row td:first-child {
+            text-align: center;
+        }
+
+        .total-row td:last-child {
+            color: #1d4ed8;
+            font-size: 18px;
+        }
+
+        /* Link Section */
+        .link-section {
+            margin-bottom: 35px;
+            padding: 18px 20px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-radius: 10px;
+            border: 1px solid #bfdbfe;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .link-section i {
+            font-size: 24px;
+            color: #1d4ed8;
+        }
+
+        .link-section a {
+            color: #1d4ed8;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .link-section a:hover {
+            text-decoration: underline;
+        }
+
+        .link-section span {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .payment-section h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #1e293b;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-section h3 i {
+            color: #1d4ed8;
+        }
+
+        .payment-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .pix-info p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .pix-info .pix-key {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1d4ed8;
+            font-family: 'Courier New', monospace;
+        }
+
+        .pix-info .pix-name {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(29, 78, 216, 0.35);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0 0 16px 16px;
+        }
+
+        @media print {
+            .footer {
+                border-radius: 0;
+            }
+        }
+
+        .footer-left {
+            font-size: 13px;
+        }
+
+        .footer-left p {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-left p i {
+            width: 18px;
+            text-align: center;
+        }
+
+        .footer-left a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .footer-left a:hover {
+            opacity: 0.8;
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-right img {
+            height: 55px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Print button */
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(29, 78, 216, 0.4);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(29, 78, 216, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .page {
+                padding: 25px;
+                padding-bottom: 140px;
+            }
+
+            .header img {
+                max-width: 200px;
+            }
+
+            .title-section h1 {
+                font-size: 16px;
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+
+            .services-table th,
+            .services-table td {
+                padding: 12px 10px;
+                font-size: 12px;
+            }
+
+            .total-row td:last-child {
+                font-size: 16px;
+            }
+
+            .payment-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .copy-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .footer-left p {
+                justify-content: center;
+            }
+
+            .print-btn {
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+
+            .link-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header img {
+                max-width: 160px;
+            }
+
+            .info-section p {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .services-table {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="print-btn" onclick="window.print()">
+        <i class="fas fa-file-pdf"></i>
+        Imprimir / Salvar PDF
+    </button>
+
+    <div class="page">
+        <!-- Header with Logo -->
+        <div class="header">
+            <img src="BRAVORA..png" alt="Bravora - Soluções Digitais">
+        </div>
+
+        <!-- Title Section -->
+        <div class="title-section">
+            <h1>
+                <i class="fas fa-video"></i>
+                Cobrança - Edição de Vídeos de Leilão
+            </h1>
+        </div>
+
+        <!-- Info Section -->
+        <div class="info-section">
+            <p>
+                <i class="fas fa-gavel"></i>
+                <span><strong>REFERENTE AO LEILÃO:</strong> 3º LEILÃO VIRTUAL RAÍZES DA PALMEIRA</span>
+            </p>
+            <p>
+                <i class="fas fa-calendar-alt"></i>
+                <span><strong>DATA DO LEILÃO:</strong> 21/01/2026</span>
+            </p>
+        </div>
+
+        <!-- Services Section -->
+        <div class="section-header">
+            <i class="fas fa-list-check"></i>
+            SERVIÇOS REALIZADOS
+        </div>
+        <div class="table-container">
+            <table class="services-table">
+                <thead>
+                    <tr>
+                        <th>Qtd</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>64</td>
+                        <td>Lotes editados (R$ 30,00/lote)</td>
+                        <td>R$ 1.920,00</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="2">Total</td>
+                        <td>R$ 1.920,00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Link Section -->
+        <div class="link-section">
+            <i class="fas fa-external-link-alt"></i>
+            <div>
+                <a href="https://palmeiraleiloes.com.br/leiloes/3/lotes" target="_blank">
+                    Visualizar lotes editados no site
+                </a>
+                <br>
+                <span>palmeiraleiloes.com.br/leiloes/3/lotes</span>
+            </div>
+        </div>
+
+        <!-- Payment Section -->
+        <div class="payment-section">
+            <h3>
+                <i class="fas fa-credit-card"></i>
+                Dados para Pagamento
+            </h3>
+            <div class="payment-box">
+                <div class="pix-info">
+                    <p><strong>PIX (CPF):</strong></p>
+                    <p class="pix-key" id="pixKey">072.238.211-16</p>
+                    <p class="pix-name">FREDERICO AZAMBUJA GOMES FILHO</p>
+                </div>
+                <button class="copy-btn" onclick="copyPix()">
+                    <i class="fas fa-copy" id="copyIcon"></i>
+                    <span id="copyText">Copiar PIX</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-left">
+                <p>
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+5541991717037">(41) 99171-7037</a>
+                </p>
+                <p>
+                    <i class="fas fa-globe"></i>
+                    <a href="https://bravoraweb.com.br" target="_blank">bravoraweb.com.br</a>
+                </p>
+            </div>
+            <div class="footer-right">
+                <img src="BRAVORA..png" alt="Bravora">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyPix() {
+            const pixKey = '07223821116';
+            navigator.clipboard.writeText(pixKey).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const icon = document.getElementById('copyIcon');
+                const text = document.getElementById('copyText');
+
+                btn.classList.add('copied');
+                icon.className = 'fas fa-check';
+                text.textContent = 'Copiado!';
+
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    icon.className = 'fas fa-copy';
+                    text.textContent = 'Copiar PIX';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>
